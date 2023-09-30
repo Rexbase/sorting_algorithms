@@ -72,4 +72,3 @@ void print_array_long(const size_t *arr, size_t size)
 	}
 	putchar('\n');
 }
-

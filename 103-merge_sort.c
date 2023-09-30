@@ -93,4 +93,3 @@ void copy_output_to_input(int *array, int *output, size_t size)
 	for (i = 0; i < size; i++)
 		array[i] = output[i];
 }
-

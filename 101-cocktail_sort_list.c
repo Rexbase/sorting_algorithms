@@ -63,4 +63,3 @@ void swap(listint_t *left, listint_t *right)
 	left->prev = right;
 	right->next = left;
 }
-

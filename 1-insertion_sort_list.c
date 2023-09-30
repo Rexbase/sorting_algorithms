@@ -1,49 +1,63 @@
-1-insertion_sort_list.c
 #include "sort.h"
 
-/**
- * swap_nodes - Swap two nodes in a listint_t doubly-linked list.
- * @h: A pointer to the head of the doubly-linked list.
- * @n1: A pointer to the first node to swap.
- * @n2: The second node to swap.
- */
-void swap_nodes(listint_t **h, listint_t **n1, listint_t *n2)
-{
-	(*n1)->next = n2->next;
-	if (n2->next != NULL)
-		n2->next->prev = *n1;
-	n2->prev = (*n1)->prev;
-	n2->next = *n1;
-	if ((*n1)->prev != NULL)
-		(*n1)->prev->next = n2;
-	else
-		*h = n2;
-	(*n1)->prev = n2;
-	*n1 = n2->prev;
-}
+
+void swap(listint_t *, listint_t *);
+
 
 /**
- * insertion_sort_list - Sorts a doubly linked list of integers
- *                       using the insertion sort algorithm.
- * @list: A pointer to the head of a doubly-linked list of integers.
- *
- * Description: Prints the list after each swap.
- */
+ * * insertion_sort_list - insertion sort for doubly linked list
+ * * @list: double pointer to head of list
+ * */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *iter, *insert, *tmp;
+	listint_t *head, *curr, *prev;
+
+
+	head = curr = prev = NULL;
+
 
 	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
-
-	for (iter = (*list)->next; iter != NULL; iter = tmp)
+	head = *list;
+	while (head->next != NULL)
 	{
-		tmp = iter->next;
-		insert = iter->prev;
-		while (insert != NULL && iter->n < insert->n)
+		if (head->n > head->next->n)
 		{
-			swap_nodes(list, &insert, iter);
-			print_list((const listint_t *)*list);
+			curr = head->next;
+			swap(head, head->next);
+			if (curr->prev == NULL)
+				*list = curr;
+			print_list((const listint_t *) *list);
+			while (curr->prev != NULL)
+			{
+				if (curr->n >= curr->prev->n)
+					break;
+				prev = curr->prev;
+				swap(prev, curr);
+				if (curr->prev == NULL)
+					*list = curr;
+				print_list((const listint_t *) *list);
+			}
 		}
+		else
+			head = head->next;
 	}
+}
+
+
+/**
+ * * swap - function to swap two nodes in a doubly linked list
+ * * @left: left node to swap
+ * * @right: right node to swap
+ * */
+void swap(listint_t *left, listint_t *right)
+{
+	if (left->prev != NULL)
+		left->prev->next = right;
+	if (right->next != NULL)
+		right->next->prev = left;
+	left->next = right->next;
+	right->prev = left->prev;
+	left->prev = right;
+	right->next = left;
 }
